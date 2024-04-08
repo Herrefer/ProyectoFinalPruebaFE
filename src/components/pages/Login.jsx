@@ -31,7 +31,7 @@ const Login = () => {
         console.log("soyadmin1234");
         sessionStorage.setItem(
           "usuarioLogeado",
-          JSON.stringify(usuarioBuscado.correo)
+          JSON.stringify({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
         );
         navegacion("/administrador");
       }
@@ -39,7 +39,7 @@ const Login = () => {
         console.log("iniciaste como usuario");
         sessionStorage.setItem(
           "usuarioLogeado",
-          JSON.stringify(usuarioBuscado.correo)
+          JSON.stringify({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
         );
         navegacion("/");
       }
