@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { leerUsuariosAPI, login } from "../../helpers/queries";
 import { useNavigate } from "react-router";
 
-const Login = () => {
+const Login = ({setUsuarioLogeado}) => {
   const {
     register,
     handleSubmit,
@@ -33,6 +33,7 @@ const Login = () => {
           "usuarioLogeado",
           JSON.stringify({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
         );
+        setUsuarioLogeado({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
         navegacion("/administrador");
       }
       if (usuarioBuscado.rol === "Usuario") {
@@ -41,6 +42,7 @@ const Login = () => {
           "usuarioLogeado",
           JSON.stringify({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
         );
+        setUsuarioLogeado({correo: usuarioBuscado.correo, rol: usuarioBuscado.rol})
         navegacion("/");
       }
     } else {
