@@ -60,7 +60,7 @@ const ListaProductos = () => {
         </thead>
         <tbody>
           {
-            productos.map((producto) => <ItemProducto key={producto.id} producto={producto}></ItemProducto>)
+            productos.map((producto) => <ItemProducto key={producto._id} producto={producto}></ItemProducto>)
           }
         </tbody>
       </Table>

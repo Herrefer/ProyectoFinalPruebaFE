@@ -18,30 +18,34 @@ const Login = () => {
   const onSubmit = async (usuario) => {
     const respuesta = await login(usuario);
     console.log(usuario);
-    if (respuesta.status === 201) {
-            // Agregar verificacion del rol de usuario con leerUsuariosAPI   
-            //  Comparacion de correo y contraseña de nuevo (desde el front) con un IF
-      const datos = await respuesta.json()
-      console.log(datos)
-      if (datos.rol === "admin") {
+    console.log(respuesta);
+    if (respuesta.status === 200) {
+      console.log("dentro del primer if");
+      const listaUsuarios = await leerUsuariosAPI();
+      const usuarioBuscado = listaUsuarios.find(
+        (u) => u.correo === usuario.correo
+      );
+      console.log(listaUsuarios);
+      console.log(usuarioBuscado);
+      if (usuarioBuscado.rol === "Administrador") {
         console.log("soyadmin1234");
         sessionStorage.setItem(
           "usuarioLogeado",
-          JSON.stringify(datos.correo)
-          // Guardar en el session la variable de datos.correo
+          JSON.stringify(usuarioBuscado.correo)
         );
-      } else if (datos.rol === "usuario") {
+        navegacion("/administrador");
+      }
+      if (usuarioBuscado.rol === "Usuario") {
         console.log("iniciaste como usuario");
         sessionStorage.setItem(
           "usuarioLogeado",
-          JSON.stringify(datos.correo)
-           // Guardar en el session la variable de datos.correo
+          JSON.stringify(usuarioBuscado.correo)
         );
-      } else {
-        console.log("El usuario no existe");
+        navegacion("/");
       }
+    } else {
+      console.log("El usuario no existe");
     }
- 
   };
 
   return (
