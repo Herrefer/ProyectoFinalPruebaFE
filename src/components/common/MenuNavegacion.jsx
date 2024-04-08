@@ -3,10 +3,15 @@ import "../../styles/navbar.css";
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import logo from "../../assets/logo.png";
 import { Link, NavLink } from "react-router-dom";
-
+import { useNavigate } from "react-router";
 const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
 
-  const objeto = {}
+  const navegacion = useNavigate()
+  const cerrarSesion = () => {
+    setUsuarioLogeado({})
+    sessionStorage.removeItem('usuarioLogeado');
+    navegacion("/")
+  }
 
   return (
     <>
@@ -76,13 +81,13 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
                   >
                     <b>ADMINISTRACIÓN</b>
                   </NavLink>
-                  <button className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2">
+                  <button className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2" onClick={cerrarSesion}>
                     CERRAR SESION
                   </button>
                 </>
               )}
               {usuarioLogeado.rol === "Usuario" && (
-                <button className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2">
+                <button className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2" onClick={cerrarSesion}>
                   CERRAR SESION
                 </button>
               )}
