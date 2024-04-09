@@ -1,6 +1,7 @@
 const URL_Productos = import.meta.env.VITE_API_PRODUCTOS;
 const URL_Producto = import.meta.env.VITE_API_PRODUCTO;
-const URL_Usuarios = import.meta.env.VITE_API_USUARIOS;
+const URL_Login = import.meta.env.VITE_API_LOGIN;
+const URL_Registro = import.meta.env.VITE_API_REGISTRO;
 
 export const leerProductosAPI = async () => {
   try {
@@ -23,7 +24,7 @@ export const obtenerProductoAPI = async (id) => {
 
 export const leerUsuariosAPI = async () => {
   try {
-    const respuesta = await fetch(URL_Usuarios);
+    const respuesta = await fetch(URL_Login);
     const listaUsuarios = await respuesta.json();
     return listaUsuarios;
   } catch (error) {
@@ -33,7 +34,7 @@ export const leerUsuariosAPI = async () => {
 
 export const obtenerUsuarioAPI = async (id) => {
   try {
-    const respuesta = await fetch(`${URL_Usuarios}/${id}`);
+    const respuesta = await fetch(`${URL_Login}/${id}`);
     return respuesta;
   } catch (error) {
     console.error(error);
@@ -42,7 +43,7 @@ export const obtenerUsuarioAPI = async (id) => {
 
 export const login = async (usuario) => {
   try {
-    const respuesta = await fetch(URL_Usuarios, {
+    const respuesta = await fetch(URL_Login, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
