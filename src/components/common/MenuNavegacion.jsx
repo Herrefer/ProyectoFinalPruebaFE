@@ -113,7 +113,7 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
                     <b>ADMINISTRACIÓN</b>
                   </NavLink>
                   <button
-                    className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
+                    className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2 fw-bold"
                     onClick={cerrarSesion}
                   >
                     CERRAR SESION
@@ -130,7 +130,7 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
                     <b>MI PEDIDO</b>
                   </NavLink>
                   <button
-                    className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
+                    className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2 fw-bold"
                     onClick={cerrarSesion}
                   >
                     CERRAR SESION
