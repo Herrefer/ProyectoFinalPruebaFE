@@ -5,8 +5,9 @@ import "../../styles/login.css";
 import { useForm } from "react-hook-form";
 import { leerUsuariosAPI, login } from "../../helpers/queries";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
-const Login = ({setUsuarioLogeado}) => {
+const Login = ({ setUsuarioLogeado }) => {
   const {
     register,
     handleSubmit,
@@ -16,6 +17,25 @@ const Login = ({setUsuarioLogeado}) => {
   const navegacion = useNavigate();
 
   const onSubmit = async (usuario) => {
+    let timerInterval;
+    Swal.fire({
+      title: "Iniciando sesión",
+      html: `Validando datos`,
+      timer: 1300,
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
     const respuesta = await login(usuario);
     console.log(usuario);
     console.log(respuesta);
@@ -31,22 +51,49 @@ const Login = ({setUsuarioLogeado}) => {
         console.log("soyadmin1234");
         sessionStorage.setItem(
           "usuarioLogeado",
-          JSON.stringify({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
+          JSON.stringify({
+            correo: usuarioBuscado.correo,
+            rol: usuarioBuscado.rol,
+          })
         );
-        setUsuarioLogeado({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
+        setUsuarioLogeado({
+          correo: usuarioBuscado.correo,
+          rol: usuarioBuscado.rol,
+        });
         navegacion("/administrador");
+        Swal.fire({
+          icon: "success",
+          title: "Sesion iniciada como administrador",
+          text: `Bienvenido ${usuarioBuscado.nombreCompleto}`
+        });
       }
       if (usuarioBuscado.rol === "Usuario") {
         console.log("iniciaste como usuario");
         sessionStorage.setItem(
           "usuarioLogeado",
-          JSON.stringify({correo: usuarioBuscado.correo, rol:usuarioBuscado.rol})
+          JSON.stringify({
+            correo: usuarioBuscado.correo,
+            rol: usuarioBuscado.rol,
+          })
         );
-        setUsuarioLogeado({correo: usuarioBuscado.correo, rol: usuarioBuscado.rol})
+        setUsuarioLogeado({
+          correo: usuarioBuscado.correo,
+          rol: usuarioBuscado.rol,
+        });
         navegacion("/");
+        Swal.fire({
+          icon: "success",
+          title: "Sesion iniciada",
+          text: `Bienvenido ${usuarioBuscado.nombreCompleto}`
+        });
       }
     } else {
       console.log("El usuario no existe");
+      Swal.fire({
+        icon: "error",
+        title: "No se pudo iniciar sesion",
+        text: "Los datos ingresados no son correctos"
+      });
     }
   };
 
