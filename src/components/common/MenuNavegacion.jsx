@@ -4,14 +4,33 @@ import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import logo from "../../assets/logo.png";
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router";
-const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
+import Swal from "sweetalert2";
 
-  const navegacion = useNavigate()
+const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
+  const navegacion = useNavigate();
   const cerrarSesion = () => {
-    setUsuarioLogeado({})
-    sessionStorage.removeItem('usuarioLogeado');
-    navegacion("/")
-  }
+    Swal.fire({
+      title: "Cerrar sesión",
+      text: "Si tienes elementos agregados en tu pedido se eliminarán",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Cerrar sesión",
+      cancelButtonText: "cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setUsuarioLogeado({});
+        sessionStorage.removeItem("usuarioLogeado");
+        navegacion("/");
+        Swal.fire({
+          title: "Sesión cerrada",
+          icon: "success",
+          timer: 1300
+        });
+      }
+    });
+  };
 
   return (
     <>
@@ -71,8 +90,7 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
               </NavLink>
               <NavLink className="navLink nav-link text-center" to="/miPedido">
                 <i className="fa-solid fa-cart-shopping fa-xl"></i>
-                <b>MI PEDIDO</b> 
-
+                <b>MI PEDIDO</b>
               </NavLink>
               {usuarioLogeado.rol === "Administrador" && (
                 <>
@@ -82,13 +100,19 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
                   >
                     <b>ADMINISTRACIÓN</b>
                   </NavLink>
-                  <button className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2" onClick={cerrarSesion}>
+                  <button
+                    className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
+                    onClick={cerrarSesion}
+                  >
                     CERRAR SESION
                   </button>
                 </>
               )}
               {usuarioLogeado.rol === "Usuario" && (
-                <button className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2" onClick={cerrarSesion}>
+                <button
+                  className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
+                  onClick={cerrarSesion}
+                >
                   CERRAR SESION
                 </button>
               )}
