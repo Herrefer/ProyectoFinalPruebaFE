@@ -71,7 +71,8 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
               </NavLink>
               <NavLink className="navLink nav-link text-center" to="/miPedido">
                 <i className="fa-solid fa-cart-shopping fa-xl"></i>
-                <b>MI PEDIDO</b>
+                <b>MI PEDIDO</b> 
+
               </NavLink>
               {usuarioLogeado.rol === "Administrador" && (
                 <>
