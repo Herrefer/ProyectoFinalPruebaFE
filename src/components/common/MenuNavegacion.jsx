@@ -26,11 +26,15 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
         Swal.fire({
           title: "Sesión cerrada",
           icon: "success",
-          timer: 1300
+          timer: 1300,
         });
       }
     });
   };
+
+  const myOrderAlert = () =>{
+    console.log("el boton funciona!")
+  }
 
   return (
     <>
@@ -88,10 +92,6 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
               <NavLink className="navLink nav-link text-center" to="/contacto">
                 <b>CONTACTO</b>
               </NavLink>
-              <NavLink className="navLink nav-link text-center" to="/miPedido">
-                <i className="fa-solid fa-cart-shopping fa-xl"></i>
-                <b>MI PEDIDO</b>
-              </NavLink>
               {usuarioLogeado.rol === "Administrador" && (
                 <>
                   <NavLink
@@ -109,15 +109,31 @@ const MenuNavegacion = ({ usuarioLogeado, setUsuarioLogeado }) => {
                 </>
               )}
               {usuarioLogeado.rol === "Usuario" && (
-                <button
-                  className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
-                  onClick={cerrarSesion}
-                >
-                  CERRAR SESION
-                </button>
+                <>
+                  <NavLink
+                    className="navLink nav-link text-center"
+                    to="/miPedido"
+                  >
+                    <i className="fa-solid fa-cart-shopping fa-xl"></i>
+                    <b>MI PEDIDO</b>
+                  </NavLink>
+                  <button
+                    className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
+                    onClick={cerrarSesion}
+                  >
+                    CERRAR SESION
+                  </button>
+                </>
               )}
               {usuarioLogeado.rol === undefined && (
                 <>
+                  <NavLink
+                    className="myOrderBTN nav-link text-center" 
+                    onClick={myOrderAlert}
+                  >
+                    <i className="fa-solid fa-cart-shopping fa-xl"></i>
+                    <b>MI PEDIDO</b>
+                  </NavLink>
                   <NavLink
                     className="navLinkBTN nav-link border border-1 border-dark rounded-2 mx-2 my-1 px-2"
                     to="/login"
