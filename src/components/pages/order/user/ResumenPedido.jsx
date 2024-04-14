@@ -13,7 +13,9 @@ import Swal from "sweetalert2";
 import { METODO_ENVIO } from "../../../../helpers/constants";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
-initMercadoPago("TEST-f603006f-f41c-4194-816a-aa1db26fb4df");
+const MPPublicKey = import.meta.env.VITE_API_MP_PUBLIC_KEY
+
+initMercadoPago(MPPublicKey);
 
 const ResumenPedido = ({
   carrito,
