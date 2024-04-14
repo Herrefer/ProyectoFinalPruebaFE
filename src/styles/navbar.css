@@ -17,6 +17,7 @@ header {
   transition: 0.4s;
   transform: scale(1.1);
 }
+
 .navbar{
   z-index: 999;
 }
