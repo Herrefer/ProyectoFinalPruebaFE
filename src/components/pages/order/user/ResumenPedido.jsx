@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -6,13 +6,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { crearPedidoApi } from '../../../../helpers/queries';
-import Swal from 'sweetalert2';
-import { METODO_ENVIO } from '../../../../helpers/constants';
+} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { crearOrdenMP, crearPedidoApi } from "../../../../helpers/queries";
+import Swal from "sweetalert2";
+import { METODO_ENVIO } from "../../../../helpers/constants";
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
-
+initMercadoPago("TEST-f603006f-f41c-4194-816a-aa1db26fb4df");
 
 const ResumenPedido = ({
   carrito,
@@ -50,67 +51,100 @@ const ResumenPedido = ({
     pedido.metodoEnvio = metodoEnvio;
     pedido.estadoEnvio = false;
     pedido.fecha = fecha;
+    // aqui empieza el codigo de MP
+
+    console.log(pedido);
+    console.log(pedido.usuario);
+
+    const orderData = {
+      title: `pedidoID: ${pedido.usuario}`,
+      quantity: 1,
+      price: pedido.monto,
+    };
+
+    const respuesta = await crearOrdenMP(orderData);
+
+    console.log(respuesta);
+    const preference = await respuesta.json();
+    console.log(preference);
+
+    const createCheckoutButton = (preferenceid) => {
+      const renderComponent = () => {
+        <Wallet
+          initialization={{ preferenceId: preferenceid }}
+          customization={{ texts: { valueProp: "smart_option" } }}
+        />;
+      };
+      renderComponent();
+    };
+
+
+    createCheckoutButton(preference.id);
+    //aqui termina el codigo de MP
 
     const crearPedidoVar = await crearPedidoApi(pedido);
     console.log(crearPedidoVar);
     if (crearPedidoVar.ok) {
-      sessionStorage.removeItem('carrito');
+      sessionStorage.removeItem("carrito");
       setCarrito([]);
       Swal.fire({
-        icon: 'success',
-        title: 'Su pedido fue generado con exito.',
+        icon: "success",
+        title: "Su pedido fue generado con exito.",
       });
     } else {
       Swal.fire({
-        icon: 'error',
-        title: 'Su pedido no fue generado, vuelva a intentarlo.',
+        icon: "error",
+        title: "Su pedido no fue generado, vuelva a intentarlo.",
       });
     }
-    console.log('pedido: ', pedido);
+    console.log("pedido: ", pedido);
   };
 
   return (
-    <div className='resumeCardContainer'>
-      <div className='resumeCard my-5'>
-        <Card className='text-dark'>
+    <div className="resumeCardContainer">
+      <div className="resumeCard my-5">
+        <Card className="text-dark">
           <CardHeader>
-            <CardTitle className='mt-2 fw-bold'>Detalles del pedido</CardTitle>
+            <CardTitle className="mt-2 fw-bold">Detalles del pedido</CardTitle>
           </CardHeader>
           <CardBody>
             {METODO_ENVIO.map((check) => (
-              <div className='my-2 d-flex' key={check.id}>
+              <div className="my-2 d-flex" key={check.id}>
                 <input
-                  type='radio'
-                  name='grup'
+                  type="radio"
+                  name="grup"
                   checked={check.id == metodoEnvio}
-                  className='mx-2'
+                  className="mx-2"
                   value={check.id}
                   onChange={(event) =>
                     setMetodoEnvio(Number(event.target.value))
                   }
                 />
-                <label htmlFor='delivery'>{check.tipo}</label>
+                <label htmlFor="delivery">{check.tipo}</label>
               </div>
             ))}
 
-            <div className='d-flex justify-content-between mt-3 fw-bold'>
+            <div className="d-flex justify-content-between mt-3 fw-bold">
               <span>Total</span>
               <span>${montoCarrito}</span>
             </div>
-            <hr className='mt-0' />
+            <hr className="mt-0" />
           </CardBody>
           <CardFooter>
-            <div className='d-flex justify-content-center'>
+            <div className="d-flex justify-content-center">
               {productosCarrito.length > 0 ? (
-                <Button
-                  onClick={confirmarPedido}
-                  className='w-100 fw-bold'
-                  variant='success'
-                >
-                  Confirmar Pedido
-                </Button>
+                <>
+                  <Button
+                    onClick={confirmarPedido}
+                    className="w-100 fw-bold"
+                    variant="success"
+                  >
+                    Confirmar Pedido
+                  </Button>
+                  <div id="wallet_container"></div>
+                </>
               ) : (
-                <Link to='/menu' className='w-100 fw-bold btn btn-danger'>
+                <Link to="/menu" className="w-100 fw-bold btn btn-danger">
                   Ir al Menú
                 </Link>
               )}
