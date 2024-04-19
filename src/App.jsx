@@ -221,6 +221,7 @@ function App() {
             }
           ></Route>
           <Route exact path="/nosotros" element={<Nosotros></Nosotros>}></Route>
+          <Route exact path="/mp" element={<PaginaPruebaMP></PaginaPruebaMP>}></Route>
           <Route path="*" element={<Error404></Error404>}></Route>
         </Routes>
         <Footer></Footer>

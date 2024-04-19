@@ -193,7 +193,7 @@ export const crearOrdenMP = async (pedido) => {
       },
       body: JSON.stringify(pedido),
     });
-    return respuesta;
+    return respuesta.json();
   } catch (error) {
     console.log(error);
   }
